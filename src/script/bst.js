@@ -61,11 +61,18 @@ function BST(compare) {
             else if (cmp > 0)
                 node[RIGHT] = remove0(key, node[RIGHT]);
             else {
-                N--;
-                var temp = {};
-                node = extractMin0(node[RIGHT], temp);
-                node[KEY] = temp.key;
-                node[VAL] = temp.val;
+                if (node[LEFT] !== null && node[RIGHT] !== null) {
+					var min = {};
+					node[RIGHT] = extractMin0(node[RIGHT], min);
+					node[KEY] = min.key;
+					node[VAL] = min.val;
+				} else {
+					N--;
+					if (node[LEFT] !== null)
+						node = node[LEFT];
+					else
+						node = node[RIGHT];
+				}
             }
             return node;
         };
@@ -85,44 +92,39 @@ function BST(compare) {
         };
         return root === null ? null : max0(root);
     };
-    
-    function extractMin0(node, temp) {
-        var extractMin1 = function(node, temp) {
-            if (node[LEFT] === null) {
-                temp.key = node[KEY];
-                temp.val = node[VAL];
-                return node[RIGHT];
-            }
-            node[LEFT] = extractMin1(node[LEFT], temp);
-            return node;
-        };
-        return node === null ? null : extractMin1(node, temp); 
-    };
-    
-    function extractMax0(node, temp) {
-        var extractMax1 = function(node, temp) {
-            if (node[RIGHT] === null) {
-                temp.key = node[KEY];
-                temp.val = node[VAL];
-                return node[LEFT];
-            }
-            node[RIGHT] = extractMax1(node[RIGHT], temp);
-            return node;
-        };
-        return node === null ? null : extractMax1(node, temp);
-    };
-        
-    this.extractMin = function() {
+	
+	this.extractMin = function() {
         var temp = {};
-        root = extractMin0(root, temp);
+        root = root === null ? null : extractMin0(root, temp);
         return temp;
     };    
     
     this.extractMax = function() {
         var temp = {};
-        root = extractMax0(root, temp);
+        root = root === null ? null : extractMax0(root, temp);
         return temp;
-    };  
+    };
+	
+	function extractMin0(node, temp) {
+		if (node[LEFT] === null) {
+			N--;
+			temp.key = node[KEY];
+			temp.val = node[VAL];
+			return node[RIGHT];
+		}
+		node[LEFT] = extractMin0(node[LEFT], temp);
+		return node;
+	};
+	
+	function extractMax0(node, temp) {
+		if (node[RIGHT] === null) {
+			N--;
+			temp.key = node[KEY];
+			temp.val = node[VAL];
+			return node[LEFT];
+		}
+		node[RIGHT] = extractMax0(node[RIGHT], temp);
+		return node;
+	};
     
 }
-
