@@ -1,6 +1,7 @@
 var map = document.getElementById("map");
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+ctx.lineWidth = 5.0;
 
 var X = 0;
 var Y = 1;
@@ -20,8 +21,8 @@ var capturedNodeID = -1;
 
 var path = null;
 
-$.getJSON("data/graph.json", function(data) {graph = data;});
-$.getJSON("data/vertices.json", function(data) {vertices = data;});
+$.getJSON("https://raw.githubusercontent.com/texhnolyzze/KZNShortestPathSearch/master/src/data/graph.json", function(data) {graph = data;});
+$.getJSON("https://raw.githubusercontent.com/texhnolyzze/KZNShortestPathSearch/master/src/data/vertices.json", function(data) {vertices = data;});
 
 var camera = new Camera2D(map.width, map.height, map.width, map.height);
 
